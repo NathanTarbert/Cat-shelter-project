@@ -1,8 +1,10 @@
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
-//const cats = require('../data/cats.json');
-//const breeds = require('../data/breeds.json')
+const qs = require('querystring');
+const formidable = require('formidable');
+const breeds = require ('../data/breeds.json');
+const cats = require('../data/cats.json');
 
 
 module.exports = (req, res) => {
@@ -36,14 +38,18 @@ module.exports = (req, res) => {
     const index = fs.createReadStream(filePath);
 
     index.on('data', (data) => {
-      res.write(data);
+      console.log("the breeds are", breeds);
+      let catBreedPlaceHolder = breeds.map((breed) => `<option value="${breed}">${breed}</option>` );
+      console.log(catBreedPlaceHolder);
+      let modifiedData = data.toString().replace('{{catBreeds}}', catBreedPlaceHolder);
+      res.write(modifiedData);
     });
     index.on('end', () => {
       res.end();
-    })
+    });
     index.on('error', (err) => {
       console.log(err);
-    })
+    });
 
   } else if (pathname === '/cats/add-breed' && req.method === 'GET') {
     let filePath = path.normalize(path.join(__dirname, '../views/addBreed.html'));
@@ -55,31 +61,53 @@ module.exports = (req, res) => {
     });
     index.on('end', () => {
       res.end();
-    })
+    });
     index.on('error', (err) => {
       console.log(err);
-    })
+    });
   } else if (pathname === '/cats/add-cat' && req.method === 'POST') {
 
     const index = fs.createReadStream(filePath);
 
     index.on('data', (data) => {
+      
       res.write(data);
     });
     index.on('end', () => {
       res.end();
-    })
+    });
     index.on('error', (err) => {
       console.log(err);
-    })
+    });
 
   } else if (pathname === '/cats/add-breed' && req.method === 'POST') {
     let formData = "";
     req.on('data', (data) => {
-      console.log("the breed form data is ", data);
+      console.log("the breed form data is ", data.toString());
       formData += data;
       console.log("the new data is ", formData);
-    })
+      let parsedData = qs.parse(formData);
+      console.log(parsedData.breed);
+
+      fs.readFile('./data/breeds.json', 'utf8' , (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        let currentBreeds = JSON.parse(data);
+        console.log("this is current", currentBreeds);
+        currentBreeds.push(parsedData.breed);
+        console.log("parsed data is", currentBreeds);
+        let updatedBreeds = JSON.stringify(currentBreeds);
+        console.log(updatedBreeds);
+
+        fs.writeFile('./data/breeds.json', updatedBreeds, 'utf-8', () => {
+          console.log("the breed was successfully uploaded...");
+        });
+        res.writeHead(301, { location: '/'});
+        res.end();
+      });
+    });
   } else {
     return true;
   }

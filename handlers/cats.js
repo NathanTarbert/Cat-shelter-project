@@ -19,10 +19,10 @@ module.exports = (req, res) => {
     });
     index.on('end', () => {
       res.end();
-    })
+    });
     index.on('error', (err) => {
       console.log(err);
-    })
+    });
 
   } else if (pathname === '/cats/add-breed' && req.method === 'GET') {
     let filePath = path.normalize(path.join(__dirname, '../views/addBreed.html'));
@@ -34,11 +34,11 @@ module.exports = (req, res) => {
     });
     index.on('end', () => {
       res.end();
-    })
+    });
     index.on('error', (err) => {
       console.log(err);
-    })
+    });
   } else {
     return true;
   }
-}
+};
