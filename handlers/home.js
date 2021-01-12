@@ -21,7 +21,7 @@ module.exports = (req, res) => {
         });
         res.write(404);
         res.end();
-        return
+        return;
       } 
       res.writeHead(200, {
         "Content-Type": "text/html" 
@@ -78,9 +78,9 @@ module.exports = (req, res) => {
     req.on('data', (data) => {
       console.log("the breed form data is ", data);
       formData += data;
-      console.log("the new data is ", formData)
+      console.log("the new data is ", formData);
     })
   } else {
     return true;
   }
-} 
+}; 
