@@ -11,11 +11,13 @@ module.exports = (req, res) => {
   
   if (pathname === '/cats/add-cat' && req.method === 'GET') {
     let filePath = path.normalize(path.join(__dirname, '../views/addCat.html'));
-
+    // console.log("the file path is", filePath);
     const index = fs.createReadStream(filePath);
-
-    index.on('data', (data) => {
-      res.write(data);
+    index.on('data', (data) => {   
+    
+    // let catBreedPlaceholder = breeds.map((breed) => `<option value="${breed}">${breed}</option>`);
+    // let modifiedData = data.toString().replace('{{catBreeds}}', catBreedPlaceholder);    
+      res.write(modifiedData);
     });
     index.on('end', () => {
       res.end();
