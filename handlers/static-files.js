@@ -27,7 +27,7 @@ module.exports = (req, res) => {
         });
         res.write('Error was found, use the force next time');
         res.end();
-        return
+        return;
       }
       //console.log('static files.js [31] pathname is ', pathname);
       res.writeHead(
