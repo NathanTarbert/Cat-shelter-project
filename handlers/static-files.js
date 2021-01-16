@@ -37,6 +37,6 @@ module.exports = (req, res) => {
      // console.log('the data is ', data)
       res.write(data);
       res.end();
-    })
+    });
   }
-}
+};
