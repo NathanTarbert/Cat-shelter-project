@@ -17,11 +17,11 @@
                 <li><a href="/cats/add-cat">Add Cat</a></li>
             </ul>
         </nav>
-        <h1>Cat Shelter | {{title}}</h1>
+        <h1>{{title}}</h1>
     </header>
         <form action="/cats/add-breed" method="POST" class="cat-form">
-            <h2>Add Cat Breed</h2>
-            <label for="breed-name">Breed Name{{cat}}</label>
+            {{!-- <h2>Add Cat Breed</h2> --}}
+            <label for="breed-name">{{cat}}</label>
             <input name="breed" type="text" id="breed-name">
             <button type="submit">Add Breed</button>
         </form>
