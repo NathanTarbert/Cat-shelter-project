@@ -16,7 +16,7 @@ router.post('/', (req, res, next) => {
       formData += data;
       // console.log("the new data is ", formData);
       let parsedData = qs.parse(formData);
-      // console.log(parsedData.breed);
+      console.log(parsedData.breed);
 
       fs.readFile('./data/breeds.json', 'utf8' , (err, data) => {
         if (err) {
