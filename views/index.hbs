@@ -10,6 +10,7 @@
     <title>Cat Shelter</title>
 </head>
 <body>
+    
     <header>
         <nav>
             <ul class="navigation">
@@ -18,9 +19,7 @@
                 <li><a href="/cats/add-cat">Add Cat</a></li>
             </ul>
         </nav>
-        <h1>Cat Shelter</h1>
-            
-            <!--<h1>{{title}}</h1>-->
+        <h1>{{title}}</h1>
 
         <form action="/search">
             <input type="text">
@@ -29,21 +28,25 @@
     </header>
 	
     <main>
-        <section class="cats">
+        <section class="cats">            
             <ul>
-                {{#each cats}}<!--render cats breeds here-->				
+                {{#each cats}}				
                <li>
-                    <img src="/images/{{this.image}}" alt="{{this.name}}">
-                    <h3>Cat Name & Breed</h3>
-                    <p><span>Breed: </span>{{this.breed}}</p>
-                    <p><span>Description: </span>{{this.description}}</p>
+                    <img src="/images/{{image}}" alt="{{name}}">
+                    <h3>{{name}}</h3>
+                    <p><span>Breed: </span>{{breed}}</p>
+                    <p><span>Description: </span>{{description}}</p>
                     <ul class="buttons">
-						<li class="btn edit"><a href="">Change Info</a></li>
-						<li class="btn delete"><a href="">New Home</a></li>                
+                        <li class="btn edit"><a href="cats/edit-cat/{{id}}">Edit Cat</a></li>
+                        <li class="btn delete"><a href="">New Home</a></li> 
+                    </ul>               
                 </li> 
-                 {{/each}}              
-            </ul>
-        </section>
+                 {{/each}}                              
+            </ul>            
+        </section>        
     </main>
+    <footer>
+        <p>&copy;Cat Project LLC.</p>
+    </footer>
 </body>
 </html>

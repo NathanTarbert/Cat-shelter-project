@@ -4,7 +4,9 @@ var cats = require('../data/cats.json');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', cats: cats });
+ // middleware that is specific to this router
+ 
+  res.render('index', { title: 'Cat Shelter', cats: cats });
 });
 
 module.exports = router;

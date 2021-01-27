@@ -21,9 +21,12 @@
     </header>
         <form action="/cats/add-breed" method="POST" class="cat-form">
             {{!-- <h2>Add Cat Breed</h2> --}}
-            <label for="breed-name">{{cat}}</label>
-            <input name="breed" type="text" id="breed-name">
+            <label for="breed-name"></label>
+            <input name="breed" type="text" id="breed-name" placeholder="Breed Name...">
             <button type="submit">Add Breed</button>
         </form>
+        <footer>
+            <p>&copy;Cat Project LLC.</p>
+        </footer>
 </body>
 </html>

@@ -21,7 +21,11 @@ router.post('/', (req, res, next) => {
   let newPath = "C:/Users/Nate4/OneDrive/Desktop/kingsland/Projects/cat-shelter/public/images/" + files.image.name;
   console.log("the path is", newPath);
 
-  let id = fields.id;
+  let tempPicId = files.image.path;
+  let temp = tempPicId.length;
+  //slice off the end of file path name to create random id
+  let catID = tempPicId.slice(66, temp);
+
   let name = fields.name;
   let description = fields.description;
   let breed = fields.breed;
@@ -29,7 +33,7 @@ router.post('/', (req, res, next) => {
   let catImage = files.image.name;
 
   let catObj = {
-    id :1,
+    id : catID,
     name: name,
     description :description,
     breed :breed,
@@ -41,6 +45,7 @@ router.post('/', (req, res, next) => {
     if(err) throw err;
     console.log("file was uploaded successfully");
   });
+
   fs.readFile('./data/cats.json', 'utf8', (err, data) => {
     if(err) throw err;
     let allCats = JSON.parse(data);  
@@ -48,9 +53,9 @@ router.post('/', (req, res, next) => {
     // console.log("all cats is", allCats);
     // let newId = oldPath.match(/[\A-Za-z0-9]+$/g)[0];
     allCats.push(catObj);
-    let json = JSON.stringify(allCats);
+    let catArray = JSON.stringify(allCats);
     // console.log(json);
-    fs.writeFile('./data/cats.json', json, 'utf8', (err) => {
+    fs.writeFile('./data/cats.json', catArray, 'utf8', (err) => {
       if(err) throw err;
       res.writeHead(302, {location: "/"});
       res.end();
