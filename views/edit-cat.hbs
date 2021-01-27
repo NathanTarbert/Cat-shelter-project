@@ -19,22 +19,24 @@
         </nav>
         <h1>{{title}}</h1>
     </header>
-        <form action="/cats/add-cat" method="POST" class="cat-form" enctype="multipart/form-data">
-            <h2>Add Cat</h2>
-            
+        <form action="/cats/edit-cat/{{id}}" method="POST" class="cat-form" >
             <label for="name">Name</label>
-            <input name="name" type="text" id="name" placeholder="Name...">
+            <input type="text" id="name" value="{{cat.name}}">
             <label for="description">Description</label>
-            <textarea name="description" id="description" placeholder="Description..."></textarea>
+            <textarea id="description">{{cat.description}}</textarea>
             <label for="image">Image</label>
-            <input name="image" type="file" id="image">
+            <input type="file" id="image" value="{{cat.image}}">
             <label for="group">Breed</label>
-            <select name="breed" id="group">
-                {{#each catBreeds}}<!--render cats breeds here-->
-				<option >{{this}}</option>
+            <select id="group" name="breed">
+                {{#each catBreeds}}
+                    {{#if this.selected}}
+                        <option selected value="{{this.breed}}">{{this.breed}}</option>
+                    {{else}}
+                        <option value="{{this.breed}}">{{this.breed}}</option>
+                    {{/if}}
                 {{/each}}
             </select>
-            <button type="submit">Add Cat</button>
+            <button type="submit" style="text-align:center";>Edit Cat</button>
         </form>
         <footer>
             <p>&copy;Cat Project LLC.</p>

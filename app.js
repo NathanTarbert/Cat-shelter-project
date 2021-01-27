@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var addBreedRouter = require('./routes/addBreed');
 var addCatRouter = require('./routes/addCat');
+var editCatRouter = require('./routes/editCat');
 var app = express();
 
 // view engine setup
@@ -24,7 +25,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/cats/add-breed', addBreedRouter);
 app.use('/cats/add-cat', addCatRouter);
-// app.use('/edit-cat', editCatRouter);
+app.use('/cats/edit-cat', editCatRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -11,12 +11,21 @@ html, body {
     color: #333;
 }
 
+footer {
+    font-size: large;
+}
+
+p {
+    text-align: center;
+}
+
 .navigation {
     display: flex;
+    font-size: large;
     list-style: none;
     justify-content: space-evenly;
     padding: 1rem;
-    background-color: #fff;
+    background-color: rgb(151, 138, 138);
 }
 
 .navigation li a {
