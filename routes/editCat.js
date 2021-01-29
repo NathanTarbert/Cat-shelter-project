@@ -3,96 +3,73 @@ var router = express.Router();
 var fs = require('fs');
 const path = require('path');
 var formidable = require('formidable');
-var catBreeds = require('../data/breeds.json');
-var cats = require('../data/cats.json');
-
-
-/* GET a single cat to edit. */
-router.get('/:id', function(req, res, next) {
-    // console.log('edit cats', req.params.id);
-      let theCat = cats.find((cat) => {
-       console.log("a single cat" ,cat);
-       return cat.id == req.params.id;
-      });
-      let breedsSelected = [];
-      catBreeds.forEach(b => {
-        breedsSelected.push( {
-          breed: b,
-          selected: (b===theCat.breed) ? true : false
-        });        
-      });
-      console.log("the cat is ", theCat.breed);
-      res.render('edit-cat', { title: 'Edit Cat', cat: theCat, catBreeds: breedsSelected });        
+const cats = require('../data/cats.json');
+const breeds = require('../data/breeds.json');
+const catsPath = './data/cats.json';
+var bodyParser = require('body-parser');
+const { title } = require('process');
+/* GET edit-cat page. */
+router.get('/:uid', function(req, res, next) {
+    let uid = req.params.uid;
+    console.log('uid', uid);
+    console.log(cats);
+    console.log(breeds);
+    let theCat = cats.find((cat) => {
+        //console.log('a single cat', cat.id);
+        return cat.id === uid;
+    });
+    console.log('theCat', theCat);
+    let breedsSelected = [];
+    breeds.forEach(b => {
+        breedsSelected.push({
+            breed: b,
+            selected: (b===theCat.breed) ? true : false 
+        });
+    });
+    res.render('edit-cat', { title: 'Edit Cat', theCat: theCat, catBreeds: breedsSelected });
 });
-
-// router.post('/:id', function(req, res, next) {
-//   console.log("post edit-cat");
-//   // call formidable to create new empty form object to populate
-//   let uid = req.params.uid;
-//   let form = new formidable.IncomingForm();
-//   console.log("~form", form);
-//   // now parse the completed form - fields holds whatever was typed in the form, files is a giant object with all the form data, including any submitted images
-//   form.parse(req, (err, fields, files) => {
-//     if(err) throw err;
-//     console.log("~fields", fields);
-//     console.log("~files", files);
-      
-//     let thisCat = cats.find((cat) => {//find the cat
-//       return cat.id===uid;
-//     });
-//     console.log("this cat", thisCat);
-// //   let oldPath = files.image.path;
-// //   // console.log(oldPath);
-// //   let newPath = "C:/Users/Nate4/OneDrive/Desktop/kingsland/Projects/cat-shelter/public/images/" + files.image.name;
-// //   // console.log("the path is", newPath);
-
-// //   let tempPicId = files.image.path;
-// //   let temp = tempPicId.length;
-// //   // slice off the end of file path name to create random id
-// //   let catID = tempPicId.slice(66, temp);
-
-// //   let name = fields.name;
-// //   let description = fields.description;
-// //   let breed = fields.breed;
-// //   let image = newPath;
-// //   let catImage = files.image.name;
-
-// //   let catObj = {
-// //     id : catID,
-// //     name: name,
-// //     description :description,
-// //     breed :breed,
-// //     image :catImage
-// //   };
-// //     console.log("obj is", catObj);
-
-// //   fs.rename(oldPath,newPath, (err) => {
-// //     if(err) throw err;
-// //     console.log("file was uploaded successfully");
-// //   });
-
-// //   fs.readFile('./data/cats.json', 'utf8', (err, data) => {
-// //     if(err) throw err;
-// //     let allCats = JSON.parse(data);  
-// //     let newCat = req.body.cat;     
-// //     // console.log("all cats is", allCats);
-// //     let newId = oldPath.match(/[\A-Za-z0-9]+$/g)[0];
-// //     allCats.push(catObj);
-// //     let catArray = JSON.stringify(allCats);
-// //     console.log(catArray);
-// //     fs.writeFile('./data/cats.json', catArray, 'utf8', (err) => {
-// //       if(err) throw err;
-// //       res.writeHead(204, {location: "/"});
-// //       res.end();
-// //     });      
-// //     });  
-// //   
-//   let modifiedData = data.toString().replace('{{cats}}', editCats);
-//   res.writeFile(cats, allCats, (err) => {
-//      res.redirect('/');
-//   });     
-// });
-// });
-// module.exports = router;
-
-    
+router.post('/:uid', function(req, res, next) {
+    console.log('post edit-cat route fired');
+    let uid = req.params.uid;
+    console.log(uid);
+    let form = new formidable.IncomingForm();
+    //console.log('~form:', form);
+    form.parse(req, function(err, fields, files){
+        if (err) next(err);
+        console.log('the fields are ', fields);
+        console.log('the files are ', files);
+        let theCat = cats.find((cat) => {  //find this cat
+            return cat.id === uid;
+        });
+        console.log('theCat:', theCat);
+        console.log('indexOf', cats.indexOf(theCat));
+        // handle image filefile
+        let imageName;
+        if (files.upload.name === '' || theCat.image === files.upload.name) {
+            //if same, copy image name from old cat data
+            imageName = theCat.image;
+        } else {
+            //process new file-name
+            imageName = files.upload.name;
+            let oldPath = files.upload.path;
+            let newPath = 'C:/Users/Nate4/OneDrive/Desktop/kingsland/Projects/cat-shelter/public/images/' + files.upload.name;
+            console.log('old path:', oldPath);
+            console.log('new path:', newPath);
+            fs.rename(oldPath, newPath, (err) => {
+                if (err) throw err;
+                console.log('files was uploaded successfully');
+            });
+        }
+        let editedCat = { id:uid, ...fields, image: imageName };
+        console.log('updated cat info:', editedCat);
+        //overwrite old cat obj with new edited cat obj
+        cats[cats.indexOf(theCat)] = editedCat; 
+        console.log('all-cats-edited', cats);
+        let json = JSON.stringify(cats);
+        fs.writeFile(catsPath, json, (err) => {
+            if (err) throw err;
+            res.redirect('/');
+        });
+    });
+});
+module.exports = router;
