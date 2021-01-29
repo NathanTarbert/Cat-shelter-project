@@ -17,17 +17,18 @@
                 <li><a href="/cats/add-cat">Add Cat</a></li>
             </ul>
         </nav>
-        <h1>{{title}}</h1>
+        <h1>Cat Shelter</h1>
     </header>
-        <form action="/cats/edit-cat/{{id}}" method="POST" class="cat-form" >
+        <form action="/cats/edit-cat/{{theCat.id}}" method="POST" class="cat-form" enctype="multipart/form-data">
+            <h2>Edit Cat</h2>
             <label for="name">Name</label>
-            <input type="text" id="name" value="{{cat.name}}">
+            <input name="name" type="text" id="name" value="{{theCat.name}}">
             <label for="description">Description</label>
-            <textarea id="description">{{cat.description}}</textarea>
+            <textarea name="description" id="description">{{theCat.description}}</textarea>
             <label for="image">Image</label>
-            <input type="file" id="image" value="{{cat.image}}">
+            <input name="upload" type="file" id="image">
             <label for="group">Breed</label>
-            <select id="group" name="breed">
+            <select name="breed" id="group">
                 {{#each catBreeds}}
                     {{#if this.selected}}
                         <option selected value="{{this.breed}}">{{this.breed}}</option>
@@ -36,7 +37,7 @@
                     {{/if}}
                 {{/each}}
             </select>
-            <button type="submit" style="text-align:center";>Edit Cat</button>
+            <button type="submit">Edit Cat</button>
         </form>
         <footer>
             <p>&copy;Cat Project LLC.</p>
