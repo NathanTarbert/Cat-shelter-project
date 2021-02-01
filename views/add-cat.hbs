@@ -1,5 +1,4 @@
-<h1>{{title}}</h1>
-<form action="/cats/add-cat" method="POST" class="cat-form" enctype="multipart/form-data">    
+<form action="/cats/add-cat" style="font-family: 'Carter One', cursive;" method="POST" class="cat-form" enctype="multipart/form-data">    
     <label for="name">Name</label>
     <input name="name" type="text" id="name" placeholder="Name...">
     <label for="description">Description</label>
@@ -8,7 +7,7 @@
     <input name="upload" type="file" id="image">
     <label for="group">Breed</label>
     <select name="breed" id="group">
-        {{#each catBreeds}}<!--render cats breeds here-->
+        {{#each catBreeds}}<!--cat breeds will render here-->
         <option >{{this}}</option>
         {{/each}}
     </select>
