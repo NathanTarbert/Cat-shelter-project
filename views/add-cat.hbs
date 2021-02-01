@@ -1,11 +1,11 @@
-<form action="/cats/add-cat" method="POST" class="cat-form" enctype="multipart/form-data">
-    
+<h1>{{title}}</h1>
+<form action="/cats/add-cat" method="POST" class="cat-form" enctype="multipart/form-data">    
     <label for="name">Name</label>
     <input name="name" type="text" id="name" placeholder="Name...">
     <label for="description">Description</label>
     <textarea name="description" id="description" placeholder="Description..."></textarea>
     <label for="image">Image</label>
-    <input name="image" type="file" id="image">
+    <input name="upload" type="file" id="image">
     <label for="group">Breed</label>
     <select name="breed" id="group">
         {{#each catBreeds}}<!--render cats breeds here-->

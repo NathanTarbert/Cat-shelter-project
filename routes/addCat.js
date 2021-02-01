@@ -3,6 +3,9 @@ var router = express.Router();
 var fs = require('fs');
 var formidable = require('formidable');
 var catBreeds = require('../data/breeds.json');
+const cats = require('../data/cats.json');
+const catsPath = './data/cats.json';
+var path = require('path');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -16,12 +19,12 @@ router.post('/', (req, res, next) => {
   form.parse(req, (err, fields,files) => { 
     if(err) throw err;
   // console.log("the field is", fields, "the file is", files);
-  let oldPath = files.image.path;
+  let oldPath = files.upload.path;
   console.log(oldPath);
-  let newPath = "C:/Users/Nate4/OneDrive/Desktop/kingsland/Projects/cat-shelter/public/images/" + files.image.name;
+  let newPath = path.normalize(path.join(__dirname, "../public/images/" + files.upload.name));
   console.log("the path is", newPath);
 
-  let tempPicId = files.image.path;
+  let tempPicId = files.upload.path;
   let temp = tempPicId.length;
   //slice off the end of file path name to create random id
   let catID = tempPicId.slice(66, temp);
@@ -30,7 +33,7 @@ router.post('/', (req, res, next) => {
   let description = fields.description;
   let breed = fields.breed;
   // let image = newPath;
-  let catImage = files.image.name;
+  let catImage = files.upload.name;
 
   let catObj = {
     id : catID,
