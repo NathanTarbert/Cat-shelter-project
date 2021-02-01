@@ -18,7 +18,7 @@ router.get('/:uid', function(req, res, next) {
         //console.log('a single cat', cat.id);
         return cat.id === uid;
     });    
-    res.render('delete-cat', { theCat: theCat });
+    res.render('delete-cat', { title: 'Find The Cat A New Home', theCat: theCat });
 });
 
 router.post('/:uid', function(req, res, next) {
